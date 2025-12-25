@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход в личный кабинет - КФУ</title>
+    <link type="text/css" href="{% static 'biblioteka/css/styles.css' %}" rel="stylesheet">
+</head>
+<body>
+
+{% include "biblioteka/header.html" %}
+
+<main>
+    <div class="container">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1>Добро пожаловать</h1>
+                    <p>Войдите в систему для доступа к библиотеке</p>
+                </div>
+
+                <!-- Вывод сообщений -->
+                {% if messages %}
+                <div class="alert-container">
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">Вход</button>
+                </div>
+
+                <!-- Форма входа -->
+                <div class="auth-form active" id="login-form">
+                    <form method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="username">Логин (Почта без @stud.kpfu.ru)</label>
+                            <input type="text" id="username" name="username" class="form-input"
+                                   placeholder="Введите почту" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Пароль</label>
+                            <input type="password" id="password" name="password" class="form-input"
+                                   placeholder="Введите пароль" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="remember_me" class="form-checkbox">
+                                <span class="checkbox-text">Запомнить меня</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-full">Войти</button>
+
+                        <div class="auth-links">
+                            <a href="#" class="auth-link">Забыли пароль?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% include "biblioteka/footer.html" %}
+
+<script></script>
+</body>
+</html>

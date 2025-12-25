@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог книг - Библиотека КФУ</title>
+    <link type="text/css" href="{% static 'biblioteka/css/styles.css' %}" rel="stylesheet">
+</head>
+<body>
+
+{% include "biblioteka/header.html" %}
+
+<main class="container">
+    <h1>Каталог книг</h1>
+
+    <section class="filters-section">
+        <div class="filters-grid">
+            <div class="filter-group">
+                <label for="search">Поиск</label>
+                <input type="text" id="search" placeholder="Название книги" class="form-input">
+            </div>
+
+            <div class="filter-group">
+                <label for="branch">Филиал</label>
+                <select id="branch" class="form-select">
+                    <option value="all">Все филиалы</option>
+                    {% for branch in branches %}
+                        <option value="{{ branch.id }}">{{ branch.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="genre">Жанр</label>
+                <select id="genre" class="form-select">
+                    <option value="all">Все жанры</option>
+                    {% for genre in genres %}
+                        <option value="{{ genre.id }}">{{ genre.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <button class="btn btn-outline" id="resetFilters">Сбросить фильтры</button>
+            </div>
+        </div>
+    </section>
+
+   <section class="books-section">
+        <div class="catalog-grid">
+            {% if books %}
+                {% for book in books %}
+                <a href="{% url 'book' book.id %}" class="book-card-link">
+                    <div class="book-card-horizontal">
+                        <div class="book-info">
+
+                            <div class="book-title">
+                                <h3>
+                                    {{ book.title }}
+                                    {% if book.publication_year %}
+                                        ({{ book.publication_year }})
+                                    {% endif %}
+                                </h3>
+                            </div>
+
+                            <div class="book-meta">
+                                <p><strong>Автор:</strong> {{ book.get_authors_display }}</p>
+                                <p><strong>Страниц:</strong> {{ book.pages|default:"N/A" }}</p>
+                            </div>
+
+                            <div class="book-description">
+                                {{ book.description }}
+                            </div>
+
+                        </div>
+                    </div>
+                </a>
+
+
+            {% endfor %}
+            {% else %}
+                <div class="no-results">
+                    <p>Книги не найдены. Попробуйте изменить критерии поиска.</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+
+</main>
+
+{% include "biblioteka/footer.html" %}
+
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const branchSelect = document.getElementById('branch');
+            const genreSelect = document.getElementById('genre');
+            const searchInput = document.getElementById('search');
+            const resetButton = document.getElementById('resetFilters');
+
+            function fetchBooks() {
+                const branch = branchSelect.value;
+                const genre = genreSelect.value;
+                const search = searchInput.value.trim();
+                const params = new URLSearchParams({ branch, genre, search });
+
+                fetch(`/api/books/?${params}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        const booksGrid = document.querySelector('.catalog-grid'); // изменили класс
+                        booksGrid.innerHTML = '';
+                        if (!data.books || data.books.length === 0) {
+                            booksGrid.innerHTML = '<p class="no-results">Книги не найдены.</p>';
+                            return;
+                        }
+
+                        data.books.forEach(book => {
+                            const link = document.createElement('a');
+                            link.href = `/book/${book.id}/`;
+                            link.className = 'book-card-link';
+
+                            link.innerHTML = `
+                                <div class="book-card-horizontal">
+                                    <div class="book-info">
+
+                                        <div class="book-title">
+                                            <h3>
+                                                ${book.title}
+                                                ${book.publication_year ? `(${book.publication_year})` : ''}
+                                            </h3>
+                                        </div>
+
+                                        <div class="book-meta">
+                                            <p><strong>Автор:</strong> ${book.authors || 'Не указан'}</p>
+                                            <p><strong>Страниц:</strong> ${book.pages || 'N/A'}</p>
+                                        </div>
+
+                                        <div class="book-description">
+                                            ${book.description || ''}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            `;
+
+                            booksGrid.appendChild(link);
+                        });
+
+                    });
+            }
+
+            branchSelect.addEventListener('change', fetchBooks);
+            genreSelect.addEventListener('change', fetchBooks);
+            searchInput.addEventListener('input', fetchBooks);
+
+            resetButton.addEventListener('click', function() {
+                branchSelect.value = 'all';
+                genreSelect.value = 'all';
+                searchInput.value = '';
+                fetchBooks();
+            });
+        });
+
+</script>
+
+</body>
+</html>

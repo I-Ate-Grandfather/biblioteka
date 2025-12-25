@@ -1,0 +1,24 @@
+# Создайте .gitignore в C:\django\Bibl\diplom
+echo "# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+media/
+
+# Virtual Environment
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local" > .gitignore

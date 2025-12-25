@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Библиотека КФУ - Казанский федеральный университет</title>
+    <link type = "text/css" href="{% static 'biblioteka/css/styles.css' %}" rel = "stylesheet">
+</head>
+<body>
+
+  {% include "biblioteka/header.html" %}
+
+    <!-- Герой секция -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Библиотека КФУ</h1>
+                <p>Центр знаний и образования Казанского федерального университета.
+                   Более 250,000 книг, современные читальные залы и удобные сервисы для студентов.</p>
+                <div class="hero-buttons">
+                    <a href="{% url 'catalog' %}" class="btn btn-secondary">Каталог книг</a>
+                    <a href="{% url 'booking' %}" class="btn btn-outline">Забронировать место</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="container">
+        <!-- Статистика -->
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📚</div>
+                    <div class="stat-value">250,000+</div>
+                    <div class="stat-label">Книг в каталоге</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-value">15,000+</div>
+                    <div class="stat-label">Активных читателей</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏢</div>
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Филиалов библиотек</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💺</div>
+                    <div class="stat-value">305</div>
+                    <div class="stat-label">Мест в читальных залах</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Сервисы -->
+        <section class="services-section">
+            <h2>Сервисы библиотеки</h2>
+            <div class="services-grid">
+                <a href="catalog.html" class="service-card">
+                    <div class="service-icon">📚</div>
+                    <h3>Каталог книг</h3>
+                    <p>Поиск и фильтрация по всем филиалам университета</p>
+                </a>
+
+                <a href="profile.html" class="service-card">
+                    <div class="service-icon">👤</div>
+                    <h3>Личный кабинет</h3>
+                    <p>Информация о студенте и история книг</p>
+                </a>
+
+                <a href="directions.html" class="service-card">
+                    <div class="service-icon">🗺️</div>
+                    <h3>Как добраться</h3>
+                    <p>Адреса и маршруты ко всем филиалам</p>
+                </a>
+
+                <a href="booking.html" class="service-card">
+                    <div class="service-icon">💺</div>
+                    <h3>Бронирование</h3>
+                    <p>Резерв места в читальном зале</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Новости -->
+        <section class="news-section">
+            <h2>Новости библиотеки</h2>
+            <div class="news-grid">
+                <article class="news-card">
+                    <div class="news-date">05 сентября 2024</div>
+                    <h3>Обновление каталога математической литературы</h3>
+                    <p>Добавлено 150+ новых книг по высшей математике и статистике</p>
+                </article>
+
+                <article class="news-card">
+                    <div class="news-date">01 сентября 2024</div>
+                    <h3>Расширенный график работы главной библиотеки</h3>
+                    <p>С нового учебного года главная библиотека работает до 21:00</p>
+                </article>
+
+                <article class="news-card">
+                    <div class="news-date">25 августа 2024</div>
+                    <h3>Новая система онлайн-бронирования</h3>
+                    <p>Теперь можно забронировать место в читальном зале через сайт</p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+{% include "biblioteka/footer.html" %}
+
+  <script src="script.js"></script>
+</body>
+</html>
